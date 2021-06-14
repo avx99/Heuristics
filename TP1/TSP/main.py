@@ -5,7 +5,7 @@ from Solution import *
 
 
 if __name__ == '__main__':
-    tsp = TSP(5,1,10)
+    tsp = TSP(10,1,20)
     print(tsp.getCouts())
     sol = tsp.glouton1()
     print(sol.getChemin())

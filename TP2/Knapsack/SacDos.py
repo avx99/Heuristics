@@ -2,6 +2,7 @@ from Solution import *
 from Objet import *
 import random
 import time
+import math
 
 class SacDos:
     def __init__(self,objets,capacite):
@@ -44,6 +45,7 @@ class SacDos:
         instance = [False for i in range(len(self.objets))]
         s = 0
         fctObj = 0
+        p = 0
         while True:
             index = lst.index(max(lst))
             s = s + self.objets[index].getPoids()
@@ -52,8 +54,9 @@ class SacDos:
             lst[index] = min(lst)
             instance[index] = True
             fctObj = fctObj + self.objets[index].getValeur()
+            p = p + self.objets[index].getPoids()
         # print(- start_time + time.time())
-        return Solution(instance,fctObj)
+        return Solution(instance,fctObj) 
     
     def fctObj(self,lst):
         fct = 0
@@ -86,6 +89,12 @@ class SacDos:
         return l,fct
         
         
+    def neighboorsRecuit(self,lst):
+        n = len(lst)
+        for i in range(n):
+            x = self.hamming(lst, i)
+            if self.poids(x) <= self.capacite:
+                return x
         
     def descente(self):
         s = self.glouton2()
@@ -93,7 +102,6 @@ class SacDos:
         while True:
             i += 1
             if i == 50:
-                print(i)
                 return s
             neighbors,fct = self.neighboors(s.getInstance())
             index = fct.index(max(fct))
@@ -103,31 +111,31 @@ class SacDos:
             s = Solution(newSol,fct[index])
         
       
-    # def boltzmane(self,s0,s,T):
-    #     if T != 0:
-    #         return math.exp((self.fonctionObjectif(s0)-self.fonctionObjectif(s))/T)
-    #     return 1
+    def boltzmane(self,s0,s,T):
+        if T != 0:
+            return math.exp((self.fctObj(s0)-self.fctObj(s))/T)
+        return 0
     
-    # def recuitSimule(self,start,T):
-    #     fct = []
-    #     ch = []
-    #     s0 = self.glouton1(start)
-    #     s = self.glouton1(start+3)
-    #     n = len(s0.getChemin())
-    #     T = [2**(-i) for i in range(T)]
-    #     for i in T:
-    #         while True:
-    #             i = random.randint(0, n-2)
-    #             j = random.randint(i+1, n-1)
-    #             s = Solution(self.twoOpt(s0.getChemin(),i,j),self.fonctionObjectif(self.twoOpt(s0.getChemin(),i,j)))
-    #             r = random.random()
-    #             if r < self.boltzmane(s0.getChemin(), s.getChemin(), i):
-    #                 fct.append(s.getFct())
-    #                 ch.append(s.getChemin())
-    #                 s0 = s
-    #                 break
-    #     index = fct.index(min(fct))
-    #     return Solution(ch[index],fct[index])
+    def recuitSimule(self,T):
+        fct = []
+        ch = []
+        s0 = self.glouton2()
+        n = len(s0.getInstance())
+        t = T
+        # T = [2**(-i) for i in range(T)]
+        T = [t-i for i in range(T)]
+        for i in T:
+            while True:
+                x = self.neighboorsRecuit(s0.getInstance())
+                s = Solution(x,self.fctObj(x))
+                r = random.random()
+                if r < self.boltzmane(s0.getInstance(), s.getInstance(), i):
+                    fct.append(self.fctObj(s.getInstance()))
+                    ch.append(s.getInstance())
+                    s0 = s
+                    break
+        index = fct.index(max(fct))
+        return Solution(ch[index],fct[index])
         
         
         

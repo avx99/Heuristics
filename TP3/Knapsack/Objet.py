@@ -21,8 +21,5 @@ class Objet:
     def generateTest(self,n):
         lst = []
         for i in range(n):
-            lst.append(Objet(random.randint(1,20),random.randint(1,20)))
+            lst.append(Objet(random.randint(1,22),random.randint(1,22)))
         return lst
-    
-    def __str__(self):
-        return "value = " + str(self.valeur) + " ----- weight = " + str(self.poids)

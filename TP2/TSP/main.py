@@ -27,4 +27,5 @@ if __name__ == '__main__':
     print(rec.getFct())
     print()
     print("**********************")
-    print()
+    print(tsp.getCouts())
+    

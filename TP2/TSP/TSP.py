@@ -6,6 +6,7 @@ import math
 
 class TSP:
     def __init__(self,n,mn,mx):
+        # np.random.seed(0)
         a = np.random.randint(mn,mx,size=(n,n))
         np.fill_diagonal(a, 0)
         self.couts = a
@@ -79,12 +80,14 @@ class TSP:
         return 1
     
     def recuitSimule(self,start,T):
+        # random.seed(0)
         fct = []
         ch = []
         s0 = self.glouton1(start)
-        s = self.glouton1(start+3)
         n = len(s0.getChemin())
-        T = [2**(-i) for i in range(T)]
+        # T = [2**(-i) for i in range(T)]
+        t = T
+        T = [t - i for i in range(T)]
         for i in T:
             while True:
                 i = random.randint(0, n-2)
@@ -103,7 +106,23 @@ class TSP:
         
         
         
-        
+    def recuitSimuleWithoutTable(self,start,T):
+        # random.seed(0)
+        s0 = self.glouton1(start)
+        n = len(s0.getChemin())
+        # T = [2**(-i) for i in range(T)]
+        t = T
+        T = [t - i for i in range(T)]
+        for i in T:
+            while True:
+                i = random.randint(0, n-2)
+                j = random.randint(i+1, n-1)
+                s = Solution(self.twoOpt(s0.getChemin(),i,j),self.fonctionObjectif(self.twoOpt(s0.getChemin(),i,j)))
+                r = random.random()
+                if r < self.boltzmane(s0.getChemin(), s.getChemin(), i):
+                    s0 = s
+                    break
+        return s
         
         
         
