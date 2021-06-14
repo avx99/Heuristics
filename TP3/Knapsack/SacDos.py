@@ -211,6 +211,18 @@ class SacDos:
         return tabou[index]
             
     
+    
+    def corrector(self,lst):
+        l = lst.copy()
+        n =  len(l)
+        for i in range(n):
+            if self.poids(l) <= self.capacite:
+                return l
+            else:
+                if l[n-1-i] == True:
+                    l[n-1-i] = False
+    
+    
     def Vk(self,s,k):
         if k == 0:
             x0 = self.hamming1(s.getInstance())
@@ -283,6 +295,8 @@ class SacDos:
         child1 = father[:pt].copy() + mother[pt:].copy()
         child2 = mother[:pt].copy() + father[pt:].copy()
         
+        child1 = self.corrector(child1)
+        child2 = self.corrector(child2)
         
         
         return child1,child2
@@ -346,35 +360,35 @@ class SacDos:
         p = p0
         t = 0
         while t != 10:
-            print("1")
+            # print("1")
             crossOverList = self.selectAnyType(p[0], p[1], "crossOver")
-            print("2")
+            # print("2")
             b = len(crossOverList[0])
-            print("2.1")
+            # print("2.1")
             childs = []
-            print("2.2")
+            # print("2.2")
             for i in range(0,len(crossOverList[0])-1,2):
-                print("2.3")
+                # print("2.3")
                 childs.append(self.crossOver(crossOverList[0][i], crossOverList[0][i+1])[0])
-                print("2.4")
+                # print("2.4")
                 childs.append(self.crossOver(crossOverList[0][i], crossOverList[0][i+1])[1])
-                print("2.5")
-            print("3")
+                # print("2.5")
+            # print("3")
             mutationList = self.selectAnyType(p[0], p[1], "mutation")
             a = len(mutationList[0])
             # print("before adding mut " + str(p[0]))
-            print("4")
+            # print("4")
             for i in range(a):
                 mutated = self.mutation(mutationList[0][i], mutationList[1][i], mutationType)
                 p[0].append(mutated.getInstance())
                 p[1].append(mutated.getValeur())
-            print("5")
+            # print("5")
             for i in range(b):
                 p[0].append(childs[i])
                 p[1].append(self.fctObj(childs[i]))   
-            print("6")
+            # print("6")
             p = self.selectAnyType(p[0], p[1])
-            print("7")
+            # print("7")
             t += 1 
         index = p[1].index(max(p[1]))
         return Solution(p[0][index], p[1][index])  

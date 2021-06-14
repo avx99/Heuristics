@@ -5,10 +5,11 @@ from Solution import *
 import time
 
 
+
 if __name__ == "__main__":
    
     obj = Objet(0,0)
-    lst = obj.generateTest(500) 
+    lst = obj.generateTest(50) 
     s = SacDos(lst,155)
 
     print("************glouton 1********************")
@@ -64,16 +65,14 @@ if __name__ == "__main__":
     print("poids = " + str(s.poids(sol6.getInstance())))  
     print("temps en s :" + str(time.time() - start_time6))
     
+
     
-    # sol2 = s.glouton2()
-    # print("************Vk********************")
-    # start_time6 = time.time()
-    # sol6 = s.Vk(sol2, 2)
-    # # print(sol2.getInstance())
-    # print("valeur = " + str(sol6.getValeur()))  
-    # print("poids = " + str(s.poids(sol6.getInstance())))  
-    # print("temps en s :" + str(time.time() - start_time6))
-    
+    print("************genetic********************")    
+    start_time7 = time.time()
+    p = s.geneticAlgorithm("permutation")
+    print("valeur = " + str(p.getValeur()))  
+    print("poids = " + str(s.poids(p.getInstance())))   
+    print("temps en s :" + str(time.time() - start_time7))
     
     # sol1 = s.glouton1()
     # sol2 = s.glouton2()
@@ -86,12 +85,8 @@ if __name__ == "__main__":
     
     # s0 = s.mutation(ll[0],ff[0],"descente")
     
-    # print("************genetic********************")    
-    # p = s.geneticAlgorithm("permutation")
-    
-    # print("valeur = " + str(p.getValeur()))  
-    # print("poids = " + str(s.poids(p.getInstance())))    
-    
+
+
     
     
     
